@@ -47,7 +47,7 @@
 
  function animate() {
      requestAnimationFrame(animate);
-     renderer.setClearColor(new THREE.Color().setRGB(1.0, 1.0, 1.0));
+    // renderer.setClearColor(new THREE.Color().setRGB(1.0, 1.0, 1.0));
      renderer.Leia_render({
          scene: scene,
          camera: camera,
