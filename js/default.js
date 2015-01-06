@@ -1,5 +1,8 @@
  var windowWidth = window.innerWidth, windowHeight = window.innerHeight;
  var camera,renderer,scene;
+ var mesh1;
+ var sizeM = 45;
+ var sizeMesh1 = sizeM;
  head.ready(function() {
     Init();
     animate();
@@ -58,8 +61,9 @@ function Init(){
 
 function addObjectsToScene(){
     //Add your objects here
-    var graph = new THREE.Mesh(new THREE.SphereGeometry(8, 30, 10), new   THREE.MeshLambertMaterial({color:0xffffff}));
-	  scene.add(graph);
+   // var graph = new THREE.Mesh(new THREE.SphereGeometry(8, 30, 10), new   THREE.MeshLambertMaterial({color:0xffffff}));
+	 // scene.add(graph);
+      readSTLs('resource/leialogo.stl', '', '');
 }
 
 function addLights(){
@@ -72,4 +76,33 @@ function addLights(){
  	scene.add(pl);
  	var ambientLight = new THREE.AmbientLight(0x111111);	
  	scene.add(ambientLight);
+  
+    
 }
+
+ function readSTLs(filename1, filename2, filename3) {
+     var xhr1 = new XMLHttpRequest();
+     xhr1.onreadystatechange = function() {
+         if (xhr1.readyState == 4) {
+             if (xhr1.status == 200 || xhr1.status === 0) {
+                 var rep = xhr1.response;
+
+                 mesh1 = parseStlBinary(rep, 0xffffff);
+                 mesh1.material.side = THREE.DoubleSide;
+                 mesh1.castShadow = true;
+                 mesh1.receiveShadow = true;
+                 mesh1.material.metal = true;
+
+                 mesh1.scale.set(sizeMesh1, sizeMesh1, sizeMesh1);
+                 scene.add(mesh1);
+                 newMeshReady = true;
+             }
+         }
+     };
+     xhr1.onerror = function(e) {
+         console.log(e);
+     };
+     xhr1.open("GET", filename1, true);
+     xhr1.responseType = "arraybuffer";
+     xhr1.send(null);
+ }
